@@ -4,7 +4,12 @@ var fs = require("fs");
 var GITHUB_USER = "stevenbamford";
 var GITHUB_TOKEN = "dbd8fb3e963b83659c857a40cd77fcd00fd7ccb1";
 
+var userInput = process.argv.slice(2);
+
 function getRepoContributors(repoOwner, repoName, cb) {
+
+  repoOwner = userInput[0];
+  repoName = userInput[1];
 
   var requestURL = "https://" + GITHUB_USER + ":" + GITHUB_TOKEN + "@api.github.com/repos/" + repoOwner + "/" + repoName +"/contributors";
   var requestOptions = {
@@ -17,12 +22,13 @@ function getRepoContributors(repoOwner, repoName, cb) {
   request.get(requestOptions, cb);
 }
 
-getRepoContributors("jquery", "jquery", function(err, result){
+getRepoContributors(userInput[0], userInput[1], function(err, result){
    result = JSON.parse(result.body);
    // console.log(result);
 
    result = result.forEach(function(user){
     console.log(user.avatar_url);
+    downloadImageByURL(user.avatar_url, user.login+".jpg");
    })
 
    });
@@ -40,4 +46,3 @@ if(fs.existsSync("./avatars") !== true){
        .pipe(fs.createWriteStream("./avatars/" + filePath));
 }
 
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "kvirani.jpg");
