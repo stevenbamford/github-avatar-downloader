@@ -1,5 +1,8 @@
+require('dotenv').config();
+
 var request = require('request');
 var fs = require("fs");
+var dotenv = require('dotenv').config();
 
 function response (err, result){
   if(err){
@@ -24,8 +27,8 @@ function downloadImageByURL(url, filePath) {
     .pipe(fs.createWriteStream("./avatars/" + filePath));
 }
 
-var GITHUB_USER = "stevenbamford";
-var GITHUB_TOKEN = "dbd8fb3e963b83659c857a40cd77fcd00fd7ccb1";
+var GITHUB_USER = process.env.GITHUB_USER
+var GITHUB_TOKEN = process.env.GITHUB_TOKEN
 var userInput = process.argv.slice(2);
 
 function getRepoContributors(repoOwner, repoName, cb) {
